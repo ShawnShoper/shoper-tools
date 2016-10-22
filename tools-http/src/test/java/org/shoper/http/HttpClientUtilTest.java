@@ -28,7 +28,7 @@ import java.util.function.Function;
 public class HttpClientUtilTest {
 	@Before
 	public void initProxyPool () throws FileNotFoundException {
-		ProxyServerPool.importProxyServer(new File("/Users/ShawnShoper/Documents/IDEAWorkspace/shoper-tools/tools-http/src/main/resources/proxyip.ls"), Charset.forName("utf-8"));
+		ProxyServerPool.importProxyServer(new File("src/main/resources/proxyip.ls"), Charset.forName("utf-8"));
 	}
 
 	@Test
