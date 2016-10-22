@@ -5,6 +5,34 @@
     <groupId>org.shoper</groupId>
     <artifactId>tools</artifactId>
     <version>0.0.2-SNAPSHOT</version>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ShawnShoper</id>
+            <name>ShawnShoper Repository</name>
+            <url>http://nexus.shawnshoper.org/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>ShawnShoper</id>
+            <name>ShawnShoper Repository</name>
+            <url>http://nexus.shawnshoper.org/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
     <modules>
         <module>tools-commons</module>
         <module>tools-http</module>
