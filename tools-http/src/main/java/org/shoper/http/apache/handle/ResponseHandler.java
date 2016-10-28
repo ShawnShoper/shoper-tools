@@ -29,7 +29,7 @@ public abstract class ResponseHandler {
 	}
 
 	public void checkStatus (int statuCode, HttpClient httpClient) throws UnHandleException {
-		if (statuCode >= 200 && statuCode < 300)
+		if (statuCode >= 200 && statuCode < 400)
 			return;
 		else
 			errHandle(statuCode, httpClient);
@@ -68,9 +68,11 @@ search:
 			content = EntityUtils.toString(this.response.getEntity(), StringUtil.isEmpty(httpClient.getAccessBean().getCharset()) ? HttpClient.DEFAULT_CHARSET : httpClient.getAccessBean().getCharset());
 			if (StringUtil.isEmpty(httpClient.getAccessBean().getCharset()))
 				if (Objects.nonNull(this.response.getEntity().getContentType())&&"text/html".equals(this.response.getEntity().getContentType().getValue())) {
-					Document document = Jsoup.parse(content);
-					String actualCharset = getContentCharset(document).name();
-					content = new String(content.getBytes(HttpClient.DEFAULT_CHARSET), actualCharset);
+					if(!content.isEmpty()) {
+						Document document = Jsoup.parse(content);
+						String actualCharset = getContentCharset(document).name();
+						content = new String(content.getBytes(HttpClient.DEFAULT_CHARSET), actualCharset);
+					}
 				}
 		} catch (IOException e) {
 			throw new HttpClientException(e);

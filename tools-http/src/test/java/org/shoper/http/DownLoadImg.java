@@ -19,9 +19,11 @@ public class DownLoadImg {
 			executorService.submit(() -> {
 				try {
 					HttpClient httpClient = null;
+					String url = "http://weibo.cn/interface/f/ttt/captcha/show.php?cpt=2_b3c4341d0a2ea990";
 					//http://s.weibo.com/ajax/pincode/pin?type=sass&ts=1475140503 新浪微博
 					//http://bigdata.palmyou.com/ntsms/captcha.jsp?d 金棕榈
-					org.shoper.http.httpClient.HttpClient httpClient1 = new org.shoper.http.httpClient.HttpClient("http://s.weibo.com/ajax/pincode/pin?type=sass&ts=" + System.currentTimeMillis());
+					//http://weibo.cn/interface/f/ttt/captcha/show.php?cpt=2_b0274b847fd2f538 新浪微博手机端
+					org.shoper.http.httpClient.HttpClient httpClient1 = new org.shoper.http.httpClient.HttpClient(url);
 					InputStream inputStream = httpClient1.getInputStream();
 					FileOutputStream out = new FileOutputStream("/Users/ShawnShoper/Desktop/img/" + System.currentTimeMillis() + ".jpg");
 					byte[] a = new byte[1024];

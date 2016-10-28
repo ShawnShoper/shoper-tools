@@ -4,21 +4,19 @@ import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.shoper.commons.StringUtil;
 import org.shoper.http.apache.handle.DefaultResponseHandler;
 import org.shoper.http.apache.handle.ResponseHandler;
@@ -33,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
@@ -219,12 +215,13 @@ public class HttpClient {
 	 *
 	 * @return CloseableHttpClient
 	 */
-	private CloseableHttpClient getHttpClient () throws InterruptedException {
+	private CloseableHttpClient getHttpClient () throws InterruptedException, HttpClientException {
 		HttpClientBuilder httpClientBuilder = HttpClients.custom().setRetryHandler(new RetryHandler(accessBean.getRetry(), true));//new RetryHandler(accessBean.getRetry()));
 		RequestConfig.Builder builder = RequestConfig.custom();
 		if (accessBean.getTimeout() > 0 && Objects.nonNull(accessBean.getTimeoutUnit()))
 			builder.setConnectTimeout((int) accessBean.getTimeoutUnit().toMillis(accessBean.getTimeout()));
 		builder.setCookieSpec(CookieSpecs.STANDARD);
+
 		//check proxy profile
 		if (accessBean.isProxy()) {
 			ProxyServer proxyServer = pullProxyServer();
@@ -240,7 +237,15 @@ public class HttpClient {
 			}
 		}
 		httpClientBuilder.setDefaultRequestConfig(builder.build());
-		return httpClientBuilder.build();
+        CloseableHttpClient httpClient = httpClientBuilder.build();
+//        if(getAccessBean().getUrl().startsWith("https")){
+//                try {
+//                    injectHTTPS(httpClient);
+//                } catch (Exception e) {
+//                    throw  new HttpClientException(e);
+//                }
+//        }
+		return httpClient;
 	}
 
 	//	private CookieStore parseCookies () {
@@ -274,4 +279,30 @@ public class HttpClient {
 			destroy(response, httpClient, statuCode);
 		}
 	}
+//	public void injectHTTPS(CloseableHttpClient httpclient) throws KeyManagementException, NoSuchAlgorithmException {
+//		//Secure Protocol implementation.
+//		SSLContext ctx = SSLContext.getInstance("SSL");
+//		//Implementation of a trust manager for X509 certificates
+//		X509TrustManager tm = new X509TrustManager() {
+//
+//			public void checkClientTrusted(X509Certificate[] xcs,
+//										   String string) throws CertificateException {
+//
+//			}
+//
+//			public void checkServerTrusted(X509Certificate[] xcs,
+//										   String string) throws CertificateException {
+//			}
+//
+//			public X509Certificate[] getAcceptedIssuers() {
+//				return null;
+//			}
+//		};
+//		ctx.init(null, new TrustManager[] { tm }, null);
+//		SSLSocketFactory ssf = new SSLSocketFactory(ctx);
+//		ClientConnectionManager ccm = httpclient.getConnectionManager();
+//		//register https protocol in httpclient's scheme registry
+//		SchemeRegistry sr = ccm.getSchemeRegistry();
+//		sr.register(new Scheme("https", 443, ssf));
+//	}
 }
