@@ -9,7 +9,7 @@ public class Mail_Test {
 	@Test
 	public void mail_test() throws AddressException, MessagingException{
 		String account = "xieh@daqsoft.com";
-		String pwd = "shawn930825";
+		String pwd = "Xiehao,930825.";
 		String sub = "test";
 		String to = "xiehao3692@vip.qq.com";
 		String content = "hello,this is a test..";

@@ -81,4 +81,8 @@ public class StringUtilTests {
     public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println(new String("a十大".getBytes(), "unicode"));
     }
+    @Test
+    public void md5(){
+        System.out.println(MD5Util.GetMD5Code("蚂蜂窝"));
+    }
 }

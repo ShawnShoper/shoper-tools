@@ -9,13 +9,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.shoper.http.apache.HttpClient;
 import org.shoper.http.apache.HttpClientBuilder;
-import org.shoper.http.apache.proxy.ProxyServerPool;
 import org.shoper.http.exception.HttpClientException;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -26,32 +23,54 @@ import java.util.concurrent.TimeoutException;
 public class Weibo_login_test {
     @Before
     public void initProxyPool() throws FileNotFoundException {
-        ProxyServerPool.importProxyServer(new File("src/main/resources/proxyip.ls"), Charset.forName("utf-8"));
+//        ProxyServerPool.importProxyServer(new File("src/main/resources/proxyip.ls"), Charset.forName("utf-8"));
     }
 
     @Test
-    public void t() throws InterruptedException {
+    public void login_logout_selenium() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-
-        JavascriptExecutor driver_js = (JavascriptExecutor) driver;
-        driver.get("http://weibo.com/login.php");
         driver.manage().window().maximize();
+//        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        JavascriptExecutor driver_js = (JavascriptExecutor) driver;
+        driver.get("http://weibo.com");
+//        driver.manage()
+//        TimeUnit.SECONDS.sleep(10);
+        for (; ; ) {
+            try {
+                driver.findElement(By.id("pl_login_form"));
+                break;
+            } catch (Exception e) {
+
+            }
+            TimeUnit.MILLISECONDS.sleep(200);
+        }
         WebElement txtbox = driver.findElement(By.id("loginname"));
         txtbox.sendKeys("xiehao3692@vip.qq.com");
         WebElement passwordBox = driver.findElement(By.name("password"));
         passwordBox.sendKeys("xiehao,930825.");
         try {
-            driver_js.executeScript("document.getElementsByClassName(\"W_btn_a btn_32px\")[0].click()");
-        }catch (Exception e) {
-            System.out.println(e);
-        }finally
-         {
-            StringBuilder stringBuilder = new StringBuilder();
-            driver.manage().getCookies().forEach(c->{
-                stringBuilder.append(c.getName()+"="+c.getValue()+";");
+            Thread thread = new Thread(() -> {
+                driver_js.executeScript("document.getElementsByClassName(\"W_btn_a btn_32px\")[0].click()");
             });
-            System.out.println(stringBuilder.toString().substring(0,stringBuilder.length()-1));
+            thread.start();
+            WebElement logout = driver.findElement(By.className(""));
+            while (!logout.isEnabled())
+                TimeUnit.MILLISECONDS.sleep(200);
+            System.out.println("login over");
+            TimeUnit.SECONDS.sleep(10);
+
+            driver_js.executeScript("document.getElementsByClassName(\"gn_func\")[0].childNodes[0].click()");
+//            suda-data="key=account_setup&value=quit"
+            System.out.println(driver_js.executeScript("document.body.scrollTop = 5000"));
+            System.out.println(driver.findElement(By.tagName("html")).getText());
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            StringBuilder stringBuilder = new StringBuilder();
+            driver.manage().getCookies().forEach(c -> {
+                stringBuilder.append(c.getName() + "=" + c.getValue() + ";");
+            });
+            System.out.println(stringBuilder.toString().substring(0, stringBuilder.length() - 1));
         }
 //        WebElement submit = driver.findElement(By.cssSelector("a[action-type='btn_submit']"));
 //        submit.click();
