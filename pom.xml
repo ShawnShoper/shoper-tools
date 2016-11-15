@@ -44,7 +44,6 @@
         <module>tools-bloomfilter</module>
         <module>tools-java-mail</module>
         <module>tools-monitor</module>
-        <module>tools-solr</module>
     </modules>
     <packaging>pom</packaging>
     <name>tools</name>

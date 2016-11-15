@@ -85,11 +85,6 @@
                 <artifactId>tools-monitor</artifactId>
                 <version>${shoper-tools.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.shoper</groupId>
-                <artifactId>tools-solr</artifactId>
-                <version>${shoper-tools.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
