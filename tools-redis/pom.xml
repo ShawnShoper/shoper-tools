@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.shoper</groupId>
             <artifactId>tools-commons</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 

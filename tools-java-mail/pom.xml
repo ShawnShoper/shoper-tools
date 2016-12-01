@@ -18,9 +18,9 @@
             <version>1.4.7</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.5</version>
+            <groupId>org.shoper</groupId>
+            <artifactId>tools-commons</artifactId>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -7,7 +7,6 @@
         <groupId>org.shoper</groupId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
-    <version>0.0.2-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tools-http</artifactId>
@@ -34,12 +33,7 @@
         <dependency>
             <groupId>org.shoper</groupId>
             <artifactId>tools-commons</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.5</version>
+            <version>${version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
         <dependency>
