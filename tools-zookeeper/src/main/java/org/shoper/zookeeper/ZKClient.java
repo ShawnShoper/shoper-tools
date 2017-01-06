@@ -157,7 +157,7 @@ public class ZKClient {
 	 */
 	private ZooKeeper buildClient (String host, int port, int timeout,
 								   ZKWatcher watcher, String name) {
-		ZooKeeper zk;
+		ZooKeeper zk = null;
 
 		for (; ; ) {
 			try {
@@ -271,9 +271,15 @@ public class ZKClient {
 			while (tokenizer.hasMoreTokens()) {
 				intact += "/" + tokenizer.nextToken();
 				if (!exists(intact)) {
-					zooKeeper.create(intact, data.getBytes(),
-									 Ids.OPEN_ACL_UNSAFE, createMode
-					);
+					if(tokenizer.hasMoreTokens()) {
+						zooKeeper.create(intact, "".getBytes(),
+								Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT
+						);
+					}else{
+						zooKeeper.create(intact, data.getBytes(),
+								Ids.OPEN_ACL_UNSAFE, createMode
+						);
+					}
 				}
 			}
 			return true;
